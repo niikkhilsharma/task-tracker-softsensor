@@ -17,8 +17,8 @@ export default function FilterButton({
       onClick={onClick}
       className={
         selected
-          ? "inline-flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-sm text-white dark:bg-zinc-100 dark:text-zinc-950"
-          : "inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm dark:border-zinc-700"
+          ? "inline-flex items-center gap-1.5 rounded-lg bg-zinc-950 px-3 py-1.5 text-sm text-white"
+          : "inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 px-3 py-1.5 text-sm"
       }
     >
       {children}

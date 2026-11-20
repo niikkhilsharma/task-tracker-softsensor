@@ -12,7 +12,7 @@ import { updateTaskDetails, type Task } from "../api";
 import Dialog from "./ui/Dialog";
 
 const fieldClass =
-  "rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100";
+  "rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950";
 
 // Edits a task's title, description, status, and priority.
 export default function EditTaskDialog({
@@ -75,11 +75,11 @@ export default function EditTaskDialog({
   return (
     <Dialog open={open} title="Edit task" busy={saving} onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        {error ? <p className="text-sm text-red-700 dark:text-red-400">{error}</p> : null}
+        {error ? <p className="text-sm text-red-700">{error}</p> : null}
         <label className="flex flex-col gap-1 text-sm">
           <span>
             Title
-            <sup className="text-red-700 dark:text-red-400" aria-hidden="true">
+            <sup className="text-red-700" aria-hidden="true">
               *
             </sup>
           </span>
@@ -118,8 +118,8 @@ export default function EditTaskDialog({
                   onClick={() => setEditStatus(option)}
                   className={`rounded-full px-2.5 py-1 text-sm disabled:opacity-60 ${
                     selected
-                      ? "bg-zinc-950 text-white dark:bg-zinc-100 dark:text-zinc-950"
-                      : "border border-zinc-300 dark:border-zinc-700"
+                      ? "bg-zinc-950 text-white"
+                      : "border border-zinc-300"
                   }`}
                 >
                   {STATUS_LABELS[option]}
@@ -148,14 +148,14 @@ export default function EditTaskDialog({
             type="button"
             onClick={onClose}
             disabled={saving}
-            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-zinc-700"
+            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-zinc-950 px-3 py-1.5 text-sm text-white disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-950"
+            className="rounded-lg bg-zinc-950 px-3 py-1.5 text-sm text-white disabled:opacity-60"
           >
             {saving ? "Saving…" : "Save"}
           </button>

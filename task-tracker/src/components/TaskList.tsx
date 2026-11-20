@@ -18,7 +18,7 @@ export default function TaskList({
 }) {
   if (error) {
     return (
-      <p className="rounded-lg border border-red-700 bg-zinc-100 px-3.5 py-3 dark:bg-zinc-900">
+      <p className="rounded-lg border border-red-700 bg-zinc-100 px-3.5 py-3">
         {error}
       </p>
     );
@@ -30,7 +30,7 @@ export default function TaskList({
 
   if (tasks.length === 0) {
     return (
-      <p className="rounded-lg border border-zinc-200 bg-zinc-100 px-3.5 py-3 dark:border-zinc-800 dark:bg-zinc-900">
+      <p className="rounded-lg border border-zinc-200 bg-zinc-100 px-3.5 py-3">
         {filtered ? "No tasks in this status." : "No tasks yet."}
       </p>
     );

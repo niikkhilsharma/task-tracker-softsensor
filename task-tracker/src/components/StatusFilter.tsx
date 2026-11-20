@@ -33,7 +33,7 @@ export default function StatusFilter({
           >
             {label}
             {count !== null ? (
-              <span className={selected ? "text-white/70 dark:text-zinc-950/60" : "text-zinc-500"}>
+              <span className={selected ? "text-white/70" : "text-zinc-500"}>
                 {count}
               </span>
             ) : null}

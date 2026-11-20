@@ -49,9 +49,9 @@ function App() {
   }
 
   return (
-    <main className="mx-auto min-h-svh w-full max-w-5xl border-x border-zinc-200 dark:border-zinc-800">
+    <main className="mx-auto min-h-svh w-full max-w-5xl border-x border-zinc-200">
       <div className="mx-auto w-full max-w-xl px-6 pt-12 pb-16">
-        <h1 className="mb-4 text-4xl font-medium tracking-tight text-zinc-950 dark:text-zinc-100">
+        <h1 className="mb-4 text-4xl font-medium tracking-tight text-zinc-950">
           Task tracker
         </h1>
         <CreateTaskForm onCreated={addTask} />

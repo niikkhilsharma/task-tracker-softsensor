@@ -70,14 +70,14 @@ export default function TaskCard({
   }
 
   const done = status === "done";
-  const quietText = done ? "text-zinc-400 dark:text-zinc-500" : "";
+  const quietText = done ? "text-zinc-400" : "";
 
   return (
-    <li className="rounded-lg border border-zinc-200 px-3.5 py-3 dark:border-zinc-800">
+    <li className="rounded-lg border border-zinc-200 px-3.5 py-3">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2
-            className={`text-lg font-medium ${done ? "text-zinc-500 line-through dark:text-zinc-400" : "text-zinc-950 dark:text-zinc-100"}`}
+            className={`text-lg font-medium ${done ? "text-zinc-500 line-through" : "text-zinc-950"}`}
           >
             {task.title}
           </h2>
@@ -96,7 +96,7 @@ export default function TaskCard({
               value={status}
               disabled={saving || deleting || savingEdit}
               onChange={(event) => handleStatusChange(event.target.value as TaskStatus)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60"
             >
               {TASK_STATUSES.map((option) => (
                 <option key={option} value={option}>
@@ -111,7 +111,7 @@ export default function TaskCard({
               aria-label={`Edit ${task.title}`}
               onClick={() => setEditing(true)}
               disabled={saving || deleting}
-              className="flex items-center justify-center rounded-lg border border-zinc-300 p-2 disabled:opacity-60 dark:border-zinc-700"
+              className="flex items-center justify-center rounded-lg border border-zinc-300 p-2 disabled:opacity-60"
             >
               <Pencil className="size-4" aria-hidden="true" />
             </button>
@@ -131,7 +131,7 @@ export default function TaskCard({
         </div>
       </div>
       {statusError ? (
-        <p className="mt-2 text-sm text-red-700 dark:text-red-400">{statusError}</p>
+        <p className="mt-2 text-sm text-red-700">{statusError}</p>
       ) : null}
       <EditTaskDialog
         task={task}
@@ -152,14 +152,14 @@ export default function TaskCard({
         onClose={() => setConfirming(false)}
       >
         {deleteError ? (
-          <p className="mb-3 text-sm text-red-700 dark:text-red-400">{deleteError}</p>
+          <p className="mb-3 text-sm text-red-700">{deleteError}</p>
         ) : null}
         <div className="flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setConfirming(false)}
             disabled={deleting}
-            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-zinc-700"
+            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60"
           >
             Cancel
           </button>

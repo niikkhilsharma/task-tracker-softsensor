@@ -64,9 +64,9 @@ export default function Dialog({
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
-        className="relative w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-5 shadow-lg outline-none dark:border-zinc-800 dark:bg-zinc-900"
+        className="relative w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-5 shadow-lg outline-none"
       >
-        <h2 id={titleId} className="text-lg font-medium text-zinc-950 dark:text-zinc-100">
+        <h2 id={titleId} className="text-lg font-medium text-zinc-950">
           {title}
         </h2>
         {description ? (
