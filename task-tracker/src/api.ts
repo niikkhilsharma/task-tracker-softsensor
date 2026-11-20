@@ -1,6 +1,6 @@
 import type { Task, TaskPriority, TaskStatus } from "../../shared/taskContract.mjs";
 
-export const API_URL = "http://localhost:3000";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export type NewTask = {
   title: string;

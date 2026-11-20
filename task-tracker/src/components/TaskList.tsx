@@ -1,5 +1,6 @@
 import type { Task } from "../api";
 import TaskCard from "./TaskCard";
+import Loader from "./ui/Loader";
 
 // Shows the loading, empty, error, or populated task list.
 export default function TaskList({
@@ -24,11 +25,7 @@ export default function TaskList({
   }
 
   if (!tasks) {
-    return (
-      <p className="rounded-lg border border-zinc-200 bg-zinc-100 px-3.5 py-3 dark:border-zinc-800 dark:bg-zinc-900">
-        Loading tasks…
-      </p>
-    );
+    return <Loader />;
   }
 
   if (tasks.length === 0) {
