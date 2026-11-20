@@ -1,6 +1,18 @@
 import type { Task, TaskPriority, TaskStatus } from "../../shared/taskContract.mjs";
 
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const DEPLOYED_API_URL = "https://task-tracker-softsensor-backend.vercel.app";
+
+// Uses a build-time API address, the local API on this machine, or the deployed API.
+function resolveApiUrl() {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window === "undefined") return "http://localhost:3000";
+
+  const host = window.location.hostname;
+  if (host === "localhost" || host === "127.0.0.1") return "http://localhost:3000";
+  return DEPLOYED_API_URL;
+}
+
+export const API_URL = resolveApiUrl();
 
 export type NewTask = {
   title: string;

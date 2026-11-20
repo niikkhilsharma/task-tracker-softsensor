@@ -31,7 +31,7 @@ The API listens on `http://localhost:3000`. The interface listens on `http://loc
 
 `npm start --prefix backend` runs the API without reloading on file changes. `npm run build --prefix task-tracker` typechecks and builds the interface. `npm run preview --prefix task-tracker` serves that build.
 
-To point a built interface at another API, set `VITE_API_URL` before `npm run build`. Vite reads it only at build time. When it is unset, the interface uses `http://localhost:3000`.
+To point a built interface at another API, set `VITE_API_URL` before `npm run build`. Vite reads it only at build time. When it is unset, a page on this machine uses `http://localhost:3000`. Any other host uses `https://task-tracker-softsensor-backend.vercel.app`.
 
 ## Tests
 
