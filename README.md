@@ -13,8 +13,6 @@ npm install --prefix backend
 npm install --prefix task-tracker
 ```
 
-1. Create `backend/.env` and set the connection string. This file is gitignored.
-
 ```bash
 MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<database>
 ```
