@@ -81,36 +81,36 @@ export default function TaskCard({
             <Clock className="size-3.5" aria-hidden="true" />
           </p>
         </div>
-        <label className="flex shrink-0 flex-col gap-1 text-sm">
-          Status
-          <select
-            aria-label={`Status for ${task.title}`}
-            value={status}
-            disabled={saving || deleting}
-            onChange={(event) => handleStatusChange(event.target.value as TaskStatus)}
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+        <div className="flex shrink-0 flex-col gap-2">
+          <label className="flex flex-col gap-1 text-sm">
+            Status
+            <select
+              aria-label={`Status for ${task.title}`}
+              value={status}
+              disabled={saving || deleting}
+              onChange={(event) => handleStatusChange(event.target.value as TaskStatus)}
+              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+            >
+              {TASK_STATUSES.map((option) => (
+                <option key={option} value={option}>
+                  {STATUS_LABELS[option]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            aria-label={`Delete ${task.title}`}
+            onClick={() => {
+              setConfirming(true);
+              setDeleteError(null);
+            }}
+            disabled={saving}
+            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-zinc-700"
           >
-            {TASK_STATUSES.map((option) => (
-              <option key={option} value={option}>
-                {STATUS_LABELS[option]}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <div className="mt-3">
-        <button
-          type="button"
-          aria-label={`Delete ${task.title}`}
-          onClick={() => {
-            setConfirming(true);
-            setDeleteError(null);
-          }}
-          disabled={saving}
-          className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-zinc-700"
-        >
-          Delete
-        </button>
+            Delete
+          </button>
+        </div>
       </div>
       {statusError ? (
         <p className="mt-2 text-sm text-red-700 dark:text-red-400">{statusError}</p>
