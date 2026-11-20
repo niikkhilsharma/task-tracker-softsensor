@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { toast } from "react-toastify";
 import {
   DEFAULT_PRIORITY,
   DEFAULT_STATUS,
@@ -36,6 +37,7 @@ export default function CreateTaskForm({ onCreated }: { onCreated: (task: Task) 
         priority,
       });
       onCreated(task);
+      toast.success(`${task.title} created`);
       setTitle("");
       setDescription("");
       setStatus(DEFAULT_STATUS);

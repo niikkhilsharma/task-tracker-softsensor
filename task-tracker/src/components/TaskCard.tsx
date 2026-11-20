@@ -1,4 +1,6 @@
+import { Clock } from "lucide-react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import {
   PRIORITY_LABELS,
   STATUS_LABELS,
@@ -35,6 +37,9 @@ export default function TaskCard({
       const updated = await updateTaskStatus(task.id, nextStatus);
       setStatus(updated.status);
       onUpdated(updated);
+      if (updated.status === "done" && previousStatus !== "done") {
+        toast.success(`${updated.title} marked as done`);
+      }
     } catch (updateError: unknown) {
       setStatus(previousStatus);
       setStatusError(updateError instanceof Error ? updateError.message : "Could not update task");
@@ -49,6 +54,7 @@ export default function TaskCard({
 
     try {
       await deleteTask(task.id);
+      toast.success(`${task.title} deleted`);
       onDeleted(task.id);
     } catch (deleteFailure: unknown) {
       setDeleteError(
@@ -63,10 +69,16 @@ export default function TaskCard({
     <li className="rounded-lg border border-zinc-200 px-3.5 py-3 dark:border-zinc-800">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-medium text-zinc-950 dark:text-zinc-100">{task.title}</h2>
+          <h2
+            className={`text-lg font-medium text-zinc-950 dark:text-zinc-100${status === "done" ? " line-through" : ""}`}
+          >
+            {task.title}
+          </h2>
           {task.description ? <p className="mt-1">{task.description}</p> : null}
-          <p className="mt-2 text-sm">
-            {PRIORITY_LABELS[task.priority]} · {new Date(task.createdAt).toLocaleString()}
+          <p className="mt-2 text-sm">{PRIORITY_LABELS[task.priority]}</p>
+          <p className="mt-1 flex items-center gap-1.5 text-sm">
+            <time dateTime={task.createdAt}>{new Date(task.createdAt).toLocaleString()}</time>
+            <Clock className="size-3.5" aria-hidden="true" />
           </p>
         </div>
         <label className="flex shrink-0 flex-col gap-1 text-sm">
