@@ -2,7 +2,7 @@
 
 A small task list with a React interface and an Express API. Tasks are stored in MongoDB. Status, priority, and title rules live in `shared/taskContract.mjs` and are used by both sides.
 
-## Setup
+## Setup Steps:
 
 You need Node.js 20 or newer and a MongoDB connection string.
 
@@ -33,7 +33,7 @@ The API listens on `http://localhost:3000`. The interface listens on `http://loc
 
 To point a built interface at another API, set `VITE_API_URL` before `npm run build`. Vite reads it only at build time. When it is unset, a page on this machine uses `http://localhost:3000`. Any other host uses `https://task-tracker-softsensor-backend.vercel.app`.
 
-## Tests
+## Tests Commands
 
 API tests use the same `MONGODB_URI` and write to a separate database, `task_tracker_test`. The database host must be reachable.
 
