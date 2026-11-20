@@ -8,6 +8,7 @@ import {
   type TaskStatus,
 } from "../../../shared/taskContract.mjs";
 import { deleteTask, updateTaskStatus, type Task } from "../api";
+import { formatCreatedAt } from "../utils/formatCreatedAt";
 import Dialog from "./ui/Dialog";
 
 // Lets one task change status or be deleted after confirmation.
@@ -65,19 +66,22 @@ export default function TaskCard({
     }
   }
 
+  const done = status === "done";
+  const quietText = done ? "text-zinc-400 dark:text-zinc-500" : "";
+
   return (
     <li className="rounded-lg border border-zinc-200 px-3.5 py-3 dark:border-zinc-800">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2
-            className={`text-lg font-medium text-zinc-950 dark:text-zinc-100${status === "done" ? " line-through" : ""}`}
+            className={`text-lg font-medium ${done ? "text-zinc-500 line-through dark:text-zinc-400" : "text-zinc-950 dark:text-zinc-100"}`}
           >
             {task.title}
           </h2>
-          {task.description ? <p className="mt-1">{task.description}</p> : null}
-          <p className="mt-2 text-sm">{PRIORITY_LABELS[task.priority]}</p>
-          <p className="mt-1 flex items-center gap-1.5 text-sm">
-            <time dateTime={task.createdAt}>{new Date(task.createdAt).toLocaleString()}</time>
+          {task.description ? <p className={`mt-1 ${quietText}`}>{task.description}</p> : null}
+          <p className={`mt-2 text-sm ${quietText}`}>{PRIORITY_LABELS[task.priority]}</p>
+          <p className={`mt-1 flex items-center gap-1.5 text-sm ${quietText}`}>
+            <time dateTime={task.createdAt}>{formatCreatedAt(task.createdAt)}</time>
             <Clock className="size-3.5" aria-hidden="true" />
           </p>
         </div>

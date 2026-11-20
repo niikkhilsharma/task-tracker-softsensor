@@ -52,15 +52,24 @@ export default function CreateTaskForm({ onCreated }: { onCreated: (task: Task) 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <label className="flex flex-col gap-1 text-sm">
-        Title
+        <span>
+          Title
+          <sup className="text-red-700 dark:text-red-400" aria-hidden="true">
+            *
+          </sup>
+        </span>
         <input
           value={title}
           onChange={(event) => setTitle(event.target.value)}
+          required
+          aria-required="true"
           className={fieldClass}
         />
       </label>
       <label className="flex flex-col gap-1 text-sm">
-        Description
+        <span>
+          Description <span className="text-zinc-500">(optional)</span>
+        </span>
         <textarea
           value={description}
           onChange={(event) => setDescription(event.target.value)}

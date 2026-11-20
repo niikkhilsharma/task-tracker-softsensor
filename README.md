@@ -73,5 +73,5 @@ npm run build --prefix task-tracker
 - Description length is not limited by the shared contract.
 - The CORS allowlist is fixed in `backend/src/app.js`. Another interface origin needs a code change.
 - Tests need a live MongoDB database. They do not wipe `task_tracker_test` first. The status test deletes the task it creates; a failed run can leave that task behind.
-- The interface has no automated tests. Filter changes replace the list with a spinner until the new request finishes.
+- The interface has no automated tests. Status filters count the loaded tasks and narrow that list in the browser.
 

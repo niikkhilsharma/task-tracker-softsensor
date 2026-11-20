@@ -4,6 +4,7 @@ import { getTasks, type Task } from "./api";
 import CreateTaskForm from "./components/CreateTaskForm";
 import StatusFilter from "./components/StatusFilter";
 import TaskList from "./components/TaskList";
+import { countTasks } from "./utils/countTasks";
 
 function App() {
   const [tasks, setTasks] = useState<Task[] | null>(null);
@@ -17,7 +18,7 @@ function App() {
 
     async function loadTasks() {
       try {
-        const nextTasks = await getTasks(status ?? undefined);
+        const nextTasks = await getTasks();
         if (!active) return;
         setTasks(nextTasks);
       } catch (loadError: unknown) {
@@ -31,23 +32,16 @@ function App() {
     return () => {
       active = false;
     };
-  }, [status]);
-
-  function matchesFilter(task: Task) {
-    return status === null || task.status === status;
-  }
+  }, []);
 
   function addTask(task: Task) {
-    if (!matchesFilter(task)) return;
     setTasks((current) => (current ? [...current, task] : [task]));
   }
 
   function replaceTask(task: Task) {
-    setTasks((current) => {
-      if (!current) return null;
-      if (!matchesFilter(task)) return current.filter((item) => item.id !== task.id);
-      return current.map((item) => (item.id === task.id ? task : item));
-    });
+    setTasks((current) =>
+      current ? current.map((item) => (item.id === task.id ? task : item)) : null,
+    );
   }
 
   function removeTask(id: string) {
@@ -62,9 +56,9 @@ function App() {
         </h1>
         <CreateTaskForm onCreated={addTask} />
         <div className="mt-8">
-          <StatusFilter value={status} onChange={setStatus} />
+          <StatusFilter value={status} counts={tasks ? countTasks(tasks) : null} onChange={setStatus} />
           <TaskList
-            tasks={tasks}
+            tasks={tasks?.filter((task) => status === null || task.status === status) ?? null}
             error={error}
             filtered={status !== null}
             onUpdated={replaceTask}
