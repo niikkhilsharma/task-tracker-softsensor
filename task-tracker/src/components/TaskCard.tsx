@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -9,9 +9,10 @@ import {
 } from "../../../shared/taskContract.mjs";
 import { deleteTask, updateTaskStatus, type Task } from "../api";
 import { formatCreatedAt } from "../utils/formatCreatedAt";
+import EditTaskDialog from "./EditTaskDialog";
 import Dialog from "./ui/Dialog";
 
-// Lets one task change status or be deleted after confirmation.
+// Lets one task be edited, change status, or be deleted after confirmation.
 export default function TaskCard({
   task,
   onUpdated,
@@ -27,6 +28,8 @@ export default function TaskCard({
   const [deleting, setDeleting] = useState(false);
   const [statusError, setStatusError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   async function handleStatusChange(nextStatus: TaskStatus) {
     const previousStatus = status;
@@ -91,9 +94,9 @@ export default function TaskCard({
             <select
               aria-label={`Status for ${task.title}`}
               value={status}
-              disabled={saving || deleting}
+              disabled={saving || deleting || savingEdit}
               onChange={(event) => handleStatusChange(event.target.value as TaskStatus)}
-              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
             >
               {TASK_STATUSES.map((option) => (
                 <option key={option} value={option}>
@@ -102,23 +105,45 @@ export default function TaskCard({
               ))}
             </select>
           </label>
-          <button
-            type="button"
-            aria-label={`Delete ${task.title}`}
-            onClick={() => {
-              setConfirming(true);
-              setDeleteError(null);
-            }}
-            disabled={saving}
-            className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-zinc-700"
-          >
-            Delete
-          </button>
+          <div className="grid w-full grid-cols-2 gap-2">
+            <button
+              type="button"
+              aria-label={`Edit ${task.title}`}
+              onClick={() => setEditing(true)}
+              disabled={saving || deleting}
+              className="flex items-center justify-center rounded-lg border border-zinc-300 p-2 disabled:opacity-60 dark:border-zinc-700"
+            >
+              <Pencil className="size-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label={`Delete ${task.title}`}
+              onClick={() => {
+                setConfirming(true);
+                setDeleteError(null);
+              }}
+              disabled={saving}
+              className="flex items-center justify-center rounded-lg bg-red-700 p-2 text-white disabled:opacity-60"
+            >
+              <Trash2 className="size-4" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </div>
       {statusError ? (
         <p className="mt-2 text-sm text-red-700 dark:text-red-400">{statusError}</p>
       ) : null}
+      <EditTaskDialog
+        task={task}
+        status={status}
+        open={editing}
+        onClose={() => setEditing(false)}
+        onUpdated={(updated) => {
+          setStatus(updated.status);
+          onUpdated(updated);
+        }}
+        onBusyChange={setSavingEdit}
+      />
       <Dialog
         open={confirming}
         title="Delete this task?"

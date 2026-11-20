@@ -57,17 +57,20 @@ function findTasks(status) {
   return taskModel().find(filter).sort({ createdAt: -1 }).lean();
 }
 
-// Updates one task's status and returns the stored document, or null when it is missing.
-function updateTaskStatus(id, status) {
+// Updates one task and returns the stored document, or null when it is missing.
+function updateTask(id, { set = {}, unset = {} } = {}) {
   if (typeof id !== "string" || !mongoose.isValidObjectId(id)) {
     return null;
   }
 
-  return taskModel().findByIdAndUpdate(
-    id,
-    { status },
-    { returnDocument: "after", lean: true },
-  );
+  const change = {};
+  if (Object.keys(set).length > 0) change.$set = set;
+  if (Object.keys(unset).length > 0) change.$unset = unset;
+
+  return taskModel().findByIdAndUpdate(id, change, {
+    returnDocument: "after",
+    lean: true,
+  });
 }
 
 // Deletes one task. Returns false when the id is missing or invalid.
@@ -111,6 +114,6 @@ module.exports = {
   findTasks,
   deleteTask,
   insertTask,
-  updateTaskStatus,
+  updateTask,
   roundTripTask,
 };

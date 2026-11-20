@@ -83,4 +83,42 @@ describe("tasks", () => {
 
     await request(`/tasks/${created.body.id}`, { method: "DELETE" });
   });
+
+  it("updates a task title and description", async () => {
+    const created = await request("/tasks", {
+      method: "POST",
+      body: JSON.stringify({ title: "Edit test", description: "Before" }),
+    });
+    const updated = await request(`/tasks/${created.body.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        title: "Edit test saved",
+        description: "After",
+        status: "in_progress",
+        priority: "high",
+      }),
+    });
+    const cleared = await request(`/tasks/${created.body.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ description: "   " }),
+    });
+    const blankTitle = await request(`/tasks/${created.body.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ title: "  " }),
+    });
+
+    assert.equal(created.status, 201);
+    assert.equal(updated.status, 200);
+    assert.equal(updated.body.title, "Edit test saved");
+    assert.equal(updated.body.description, "After");
+    assert.equal(updated.body.status, "in_progress");
+    assert.equal(updated.body.priority, "high");
+    assert.equal(cleared.status, 200);
+    assert.equal(cleared.body.title, "Edit test saved");
+    assert.equal(cleared.body.description, undefined);
+    assert.equal(blankTitle.status, 400);
+    assert.equal(blankTitle.body.error, "Title is required");
+
+    await request(`/tasks/${created.body.id}`, { method: "DELETE" });
+  });
 });

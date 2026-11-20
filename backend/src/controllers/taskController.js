@@ -1,5 +1,5 @@
-const { deleteTask, findTasks, insertTask, updateTaskStatus } = require("../models/task");
-const { buildTask, statusFilter, statusUpdate } = require("../services/taskService");
+const { deleteTask, findTasks, insertTask, updateTask: saveTask } = require("../models/task");
+const { buildTask, statusFilter, taskUpdate } = require("../services/taskService");
 const { toTask } = require("../utils/taskFormatter");
 const { logError } = require("../utils/logError");
 
@@ -41,17 +41,17 @@ function createTask(contract) {
   };
 }
 
-// Changes a task's status. An unknown status is rejected and a missing task returns 404.
+// Changes a task's status, title, or description. A missing task returns 404.
 function updateTask(contract) {
   return async (req, res) => {
-    const { error, status } = statusUpdate(req.body, contract);
+    const { error, set, unset } = taskUpdate(req.body, contract);
     if (error) {
       res.status(400).json({ error });
       return;
     }
 
     try {
-      const saved = await updateTaskStatus(req.params.id, status);
+      const saved = await saveTask(req.params.id, { set, unset });
       if (!saved) {
         res.status(404).json({ error: "Task not found" });
         return;

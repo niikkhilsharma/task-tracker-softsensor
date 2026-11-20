@@ -58,21 +58,68 @@ function statusFilter(query, contract) {
   return { status };
 }
 
-// Checks a status update and returns the new status.
-function statusUpdate(body, contract) {
+// Checks a task update and returns the fields to set or clear.
+function taskUpdate(body, contract) {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     return { error: "Request body must be an object" };
   }
 
-  if (typeof body.status !== "string" || !contract.statuses.includes(body.status)) {
-    return { error: "Status must be todo, in_progress, or done" };
+  const set = {};
+  const unset = {};
+  let hasChange = false;
+
+  if (body.status !== undefined) {
+    if (typeof body.status !== "string" || !contract.statuses.includes(body.status)) {
+      return { error: "Status must be todo, in_progress, or done" };
+    }
+    set.status = body.status;
+    hasChange = true;
   }
 
-  return { status: body.status };
+  if (body.title !== undefined) {
+    if (typeof body.title !== "string" || body.title.trim() === "") {
+      return { error: "Title is required" };
+    }
+    const title = body.title.trim();
+    if (title.length > contract.titleMaxLength) {
+      return {
+        error: `Title must be at most ${contract.titleMaxLength} characters`,
+      };
+    }
+    set.title = title;
+    hasChange = true;
+  }
+
+  if (body.priority !== undefined) {
+    if (typeof body.priority !== "string" || !contract.priorities.includes(body.priority)) {
+      return { error: "Priority must be low, medium, or high" };
+    }
+    set.priority = body.priority;
+    hasChange = true;
+  }
+
+  if (body.description !== undefined) {
+    if (typeof body.description !== "string") {
+      return { error: "Description must be a string" };
+    }
+    const description = body.description.trim();
+    if (description === "") {
+      unset.description = "";
+    } else {
+      set.description = description;
+    }
+    hasChange = true;
+  }
+
+  if (!hasChange) {
+    return { error: "Title, description, status, or priority is required" };
+  }
+
+  return { set, unset };
 }
 
 module.exports = {
   buildTask,
   statusFilter,
-  statusUpdate,
+  taskUpdate,
 };

@@ -51,6 +51,29 @@ export async function getTasks(status?: TaskStatus): Promise<Task[]> {
   return response.json() as Promise<Task[]>;
 }
 
+// Saves the edited title, description, status, and priority for one task.
+export async function updateTaskDetails(
+  id: string,
+  details: { title: string; description: string; status: TaskStatus; priority: TaskPriority },
+): Promise<Task> {
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}/tasks/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(details),
+    });
+  } catch {
+    throw new Error("Could not reach the API");
+  }
+
+  if (!response.ok) {
+    throw new Error(await readError(response));
+  }
+
+  return response.json() as Promise<Task>;
+}
+
 // Saves a new status for one task and returns the updated task.
 export async function updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
   let response: Response;
