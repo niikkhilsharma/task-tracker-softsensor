@@ -51,10 +51,10 @@ function ensureTasksCollection(_connection, contract) {
   return Task;
 }
 
-// Returns tasks, optionally limited to one status, oldest first.
+// Returns tasks, optionally limited to one status, newest first.
 function findTasks(status) {
   const filter = status ? { status } : {};
-  return taskModel().find(filter).sort({ createdAt: 1 }).lean();
+  return taskModel().find(filter).sort({ createdAt: -1 }).lean();
 }
 
 // Updates one task's status and returns the stored document, or null when it is missing.

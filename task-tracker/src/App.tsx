@@ -35,7 +35,7 @@ function App() {
   }, []);
 
   function addTask(task: Task) {
-    setTasks((current) => (current ? [...current, task] : [task]));
+    setTasks((current) => (current ? [task, ...current] : [task]));
   }
 
   function replaceTask(task: Task) {
